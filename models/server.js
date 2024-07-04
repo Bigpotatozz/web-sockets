@@ -46,12 +46,19 @@ class Server{
 
     socketEvents(){
 
-        this.io.on('connection', (usuario) => {
+        this.io.on('connection', (socket) => {
             console.log('usuario conectado');
-
-
-            usuario.on('disconnect', () => {
+            socket.on('disconnect', () => {
                 console.log('usuario desconectado')
+            })
+
+            //RCIBE MENSAJES DEL FRONTEND EN TIEMPO REAL
+            socket.on('mensaje_cliente',(payload) => {
+                console.log(payload);
+            })
+
+            socket.on('mensaje_cliente',(payload) => {
+                this.io.emit('mensaje_cliente', `Mensaje ${payload} recibido en el servidor`);
             })
         })
 
